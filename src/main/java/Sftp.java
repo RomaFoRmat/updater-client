@@ -116,6 +116,7 @@ public class Sftp {
             @Override
             public void end() {
                 System.out.println("progress: finished in " + (System.currentTimeMillis() - time0) + "ms");
+                System.out.println("Программа успешно обновлена!\nЖдите,идет запуск!");
             }
         }
     }
