@@ -10,12 +10,14 @@ public class Starter {
         Integer sourcePort    = 22;
         String sourceUser     = "root";
         String sourcePassword = "stpc-2plus";
-        String sourceFile     = "/root/Projects/Release/upak-server/target/label-app.jar";
+//        String sourceFile     = "/root/Projects/Release/upak-server/target/label-app.jar";
+        String sourceDir     = "/root/Projects/Release/bsw_sgp_api";
 
-        String localFile = "D:\\label-app.jar";
+        String maxVersion = Sftp.Downloader.getMaxVersionFile(sourceDir);
+        String localFile = "D:\\"+maxVersion;
 
         try {
-            Sftp.Downloader.download(sourceHost, sourcePort, sourceUser, sourcePassword, localFile, sourceFile);
+            Sftp.Downloader.download(sourceHost, sourcePort, sourceUser, sourcePassword, localFile, sourceDir);
             Desktop.getDesktop().open(app);
         } catch (Throwable cause) {
             cause.printStackTrace();

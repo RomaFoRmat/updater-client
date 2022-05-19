@@ -1,5 +1,7 @@
 import com.jcraft.jsch.*;
 
+import java.io.File;
+
 public class Sftp {
     private static long time0;
     /**
@@ -7,7 +9,7 @@ public class Sftp {
      */
     public static class Downloader {
 
-        public static void download(String host, Integer port, String user, String password, String localFile, String sourceFile) {
+        public static void download(String host, Integer port, String user, String password, String localFile, String sourceDir) {
             try {
                 JSch jsch = new JSch();
 
@@ -27,7 +29,7 @@ public class Sftp {
                 try {
                     System.out.println("start");
                     time0 = System.currentTimeMillis();
-                    channelSftp.get(sourceFile, localFile, new MyProgressMonitor(sourceFile), ChannelSftp.OVERWRITE);
+                    channelSftp.get(sourceDir, localFile, new MyProgressMonitor(sourceDir), ChannelSftp.OVERWRITE);
                 } catch (SftpException cause) {
                     cause.printStackTrace();
                 }
@@ -118,6 +120,28 @@ public class Sftp {
                 System.out.println("progress: finished in " + (System.currentTimeMillis() - time0) + "ms");
                 System.out.println("Программа успешно обновлена!\nЖдите,идет запуск!");
             }
+        }
+
+        public static String getMaxVersionFile(String dir) {
+            File[] files = new File(dir).listFiles();
+            File maxVersionFile = null;
+            double maxVersion = 0;
+            int maxVersionIndex = 0;
+            if (files != null) {
+                for (File file : files) {
+                    String name = file.getName().replace(".jar", "");
+                    String[] result = name.split("-");
+                    double version = Double.parseDouble(result[result.length - 1]);
+                    if (version > maxVersion) {
+                        maxVersion = version;
+                    }
+                }
+                maxVersionFile = files[maxVersionIndex];
+//            System.out.println(maxVersion);
+            } else {
+                System.out.println("Данной директории не существует");
+            }
+            return maxVersionFile.getName();
         }
     }
 
