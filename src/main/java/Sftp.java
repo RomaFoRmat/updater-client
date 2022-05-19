@@ -9,7 +9,7 @@ public class Sftp {
      */
     public static class Downloader {
 
-        public static void download(String host, Integer port, String user, String password, String localFile, String sourceDir) {
+        public static void download(String host, Integer port, String user, String password, String localFile, String maxVersionFile) {
             try {
                 JSch jsch = new JSch();
 
@@ -29,7 +29,7 @@ public class Sftp {
                 try {
                     System.out.println("start");
                     time0 = System.currentTimeMillis();
-                    channelSftp.get(sourceDir, localFile, new MyProgressMonitor(sourceDir), ChannelSftp.OVERWRITE);
+                    channelSftp.get(maxVersionFile, localFile, new MyProgressMonitor(maxVersionFile), ChannelSftp.OVERWRITE);
                 } catch (SftpException cause) {
                     cause.printStackTrace();
                 }

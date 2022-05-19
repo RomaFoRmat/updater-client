@@ -13,8 +13,8 @@ public class Starter {
 //        String sourceFile     = "/root/Projects/Release/upak-server/target/label-app.jar";
         String sourceDir     = "/root/Projects/Release/bsw_sgp_api";
 
-        String maxVersion = Sftp.Downloader.getMaxVersionFile(sourceDir);
-        String localFile = "D:\\"+maxVersion;
+        String maxVersionFile = Sftp.Downloader.getMaxVersionFile(sourceDir);
+        String localFile = "D:\\"+maxVersionFile;
 
         try {
             Sftp.Downloader.download(sourceHost, sourcePort, sourceUser, sourcePassword, localFile, sourceDir);
