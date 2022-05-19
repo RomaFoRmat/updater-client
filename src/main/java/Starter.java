@@ -17,7 +17,7 @@ public class Starter {
         String localFile = "D:\\"+maxVersionFile;
 
         try {
-            Sftp.Downloader.download(sourceHost, sourcePort, sourceUser, sourcePassword, localFile, sourceDir);
+            Sftp.Downloader.download(sourceHost, sourcePort, sourceUser, sourcePassword, localFile, maxVersionFile);
             Desktop.getDesktop().open(app);
         } catch (Throwable cause) {
             cause.printStackTrace();
