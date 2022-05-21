@@ -1,24 +1,17 @@
-import java.awt.*;
-import java.io.File;
+import com.jcraft.jsch.SftpException;
 
 public class Starter {
 
-
-    public static void main(String[] args) {
-        final File app = new File("D:\\Bykov_projects\\Spools Scan\\spools-scan-app.exe");
+    public static void main(String[] args) throws SftpException {
         String sourceHost     = "172.16.172.122";
         Integer sourcePort    = 22;
         String sourceUser     = "root";
         String sourcePassword = "stpc-2plus";
-//        String sourceFile     = "/root/Projects/Release/upak-server/target/label-app.jar";
-        String sourceDir     = "/root/Projects/Release/bsw_sgp_api";
-
-        String maxVersionFile = Sftp.Downloader.getMaxVersionFile(sourceDir);
-        String localFile = "D:\\"+maxVersionFile;
+        String sourceDir     = "/root/Projects/Release/bsw_spools_scan";
+        String localFile = "D:\\ss_app\\";
 
         try {
-            Sftp.Downloader.download(sourceHost, sourcePort, sourceUser, sourcePassword, localFile, maxVersionFile);
-            Desktop.getDesktop().open(app);
+            Sftp.Downloader.download(sourceHost, sourcePort, sourceUser, sourcePassword,sourceDir,localFile);
         } catch (Throwable cause) {
             cause.printStackTrace();
         }
