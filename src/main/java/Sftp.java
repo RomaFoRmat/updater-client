@@ -7,6 +7,7 @@ public class Sftp {
     private static long time0;
     private static String FILE_NAME;
     public static  final String FILE_DATA = "chcp 1251\n" + "set file_name = %1\n" + "start javaw -jar %1\n" + "exit";
+    public static final String TARGET_FILE = "bsw-spools-scan-app.jar";
 
     /**
      * Класс для скачивания файла.
@@ -33,18 +34,25 @@ public class Sftp {
 
                 //скачивание файла c удаленного сервера:
                 if (FILE_NAME != null) {
-                    FileUtil.folderTempFiles(localFile);
-                    FileUtil.deleteFiles(localFile, ".jar");
+                    FileUtil.folderTempFiles(localFile);                           //создаём директорию,если таковой нет
+                    FileUtil.deleteFiles(localFile, ".jar");                   //очищаем старые jar файлы
                     System.out.println("Start update");
                     time0 = System.currentTimeMillis();
                     channelSftp.get(maxVersionFile, localFile,
-                            new MyProgressMonitor(maxVersionFile), ChannelSftp.OVERWRITE);
-                    FileUtil.createFile(new File("spools-scan-run.bat"),FILE_DATA);
-                    Runtime.getRuntime().exec(" cmd /c start  spools-scan-run.bat" + " " + localFile + FILE_NAME);
+                            new MyProgressMonitor(maxVersionFile), ChannelSftp.OVERWRITE);   //download max version File
+                    FileUtil.createFile(new File("spools-scan-run.bat"),FILE_DATA); //создаём bat файл
+                    File oldFile = new File(localFile + FILE_NAME);
+                    File targetFile = new File(localFile + TARGET_FILE);
+
+                    //переименовываем полученный файл в конечный:
+                    if(oldFile.renameTo(targetFile)){
+                        System.out.println("Файл переименован успешно");
+                        Runtime.getRuntime().exec(" cmd /c start  spools-scan-run.bat" + " " + targetFile);
+                    } else System.out.println("Файл не был переименован");
+
                 } else {
                     System.out.println("No such file");
                 }
-
                 channelSftp.exit();
                 session.disconnect();
             } catch (Exception cause) {
