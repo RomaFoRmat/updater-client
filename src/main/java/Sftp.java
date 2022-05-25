@@ -1,5 +1,4 @@
 import com.jcraft.jsch.*;
-
 import java.io.File;
 import java.util.Vector;
 
@@ -8,6 +7,8 @@ public class Sftp {
     private static String FILE_NAME;
     public static  final String FILE_DATA = "chcp 1251\n" + "set file_name = %1\n" + "start javaw -jar %1\n" + "exit";
     public static final String TARGET_FILE = "bsw-spools-scan-app.jar";
+    public static final String FOLDER_PATH = "C:\\bsw_spools_scan\\bat\\launch_after_update.bat";
+    public static final String LAUNCH_CLIENT = "cmd /c start C:\\bsw_spools_scan\\bat\\launch_after_update.bat";
 
     /**
      * Класс для скачивания файла.
@@ -34,20 +35,20 @@ public class Sftp {
 
                 //скачивание файла c удаленного сервера:
                 if (FILE_NAME != null) {
-                    FileUtil.folderTempFiles(localFile);                           //создаём директорию,если таковой нет
+                    FileUtil.folderTempFiles(localFile+"\\bat\\");          //создаём директорию,если таковой нет
                     FileUtil.deleteFiles(localFile, ".jar");                   //очищаем старые jar файлы
                     System.out.println("Start update");
                     time0 = System.currentTimeMillis();
                     channelSftp.get(maxVersionFile, localFile,
                             new MyProgressMonitor(maxVersionFile), ChannelSftp.OVERWRITE);   //download max version File
-                    FileUtil.createFile(new File("spools-scan-run.bat"),FILE_DATA); //создаём bat файл
+                    FileUtil.createFile(new File(FOLDER_PATH),FILE_DATA);          //создаём bat файл
                     File oldFile = new File(localFile + FILE_NAME);
                     File targetFile = new File(localFile + TARGET_FILE);
 
                     //переименовываем полученный файл в конечный:
                     if(oldFile.renameTo(targetFile)){
                         System.out.println("Файл переименован успешно");
-                        Runtime.getRuntime().exec(" cmd /c start  spools-scan-run.bat" + " " + targetFile);
+                        Runtime.getRuntime().exec(LAUNCH_CLIENT + " " + targetFile);
                     } else System.out.println("Файл не был переименован");
 
                 } else {
