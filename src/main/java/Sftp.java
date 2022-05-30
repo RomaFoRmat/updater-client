@@ -5,7 +5,8 @@ import java.util.Vector;
 public class Sftp {
     private static long time0;
     private static String FILE_NAME;
-    public static  final String FILE_DATA = "chcp 1251\n" + "set file_name = %1\n" + "start javaw -jar %1\n" + "exit";
+    public static  final String FILE_DATA = "chcp 1251\n" + "set file_name = %1\n" + "start javaw " +
+                                            "-Djavafx.preloader=gui.application.AppPreloader -jar %1\n" + "exit";
     public static final String TARGET_FILE = "bsw-spools-scan-app.jar";
     public static final String FOLDER_PATH = "C:\\bsw_spools_scan\\bat\\launch_after_update.bat";
     public static final String LAUNCH_CLIENT = "cmd /c start C:\\bsw_spools_scan\\bat\\launch_after_update.bat";
